@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base target="_top">
+		<meta charset="ISO-8859-1">
+		<title>PickUp</title>
+		<style>
+			/*--- General-Style CSS ---*/
+			:root
+			{
+				--pickupNeonGreen: #00ff55;
+				--pickupLightGreen: #00cc44;
+				--pickupGreen: #009933; 
+				--pickupDullGreen: #1d6334;
+				--pickupDarkGreen: #00802b;
+				--pickupGray: #666666;
+				--pickupDarkGray: #4d4d4d;
+			}
+			*
+			{
+				box-sizing: border-box;
+				position: relative;
+				margin: 0;
+				padding: 0;
+				font-family: consolas;
+				text-transform: uppercase;
+				color: white;
+				user-select: none; /* No text selection allowed */
+			}
+			.button
+			{
+				border-radius: 20px;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				padding-left: 30px;
+				padding-right: 30px;
+				font-weight: bold;
+				text-transform: uppercase;
+				font-size: 20px;
+				font-family: consolas;
+				color: white;
+				background-color: var(--pickupGreen);
+			}
+			.button:hover
+			{
+				box-shadow: 0px 0px 5px 4px rgba(255, 255, 255, 0.5); /* Glow-effect: (0px 0px) = Centered, (4) = blur, (4px) = radius*/
+			}
+			.button:active
+			{
+				box-shadow: inset 6px 6px 5px rgba(0, 0, 0, 0.5);
+			}
+			.spacer /*Creates a small chunk of space*/
+			{
+				width: 5%;
+			}
+			.info
+			{
+				display: flex;
+				flex-flow: column nowrap;
+				justify-content: center;
+				align-items: center;
+				width: 80%;
+				padding: 10px 30px 10px 30px;
+				font-size: 15px;
+				text-align: center;
+				background-color: var(--pickupDarkGray);
+			}
+			.horizontal-info
+			{
+				background-color: var(--pickupDarkGray);
+			}
+			.horizontal-wrap
+			{
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				height: auto;
+			}
+			input 
+			{
+				color: black;
+				width: 25%;
+			}
+			.large-text
+			{
+				width: 50%;
+				height: 25%;
+			}
+			
+			/*--- Page-Elements CSS ---*/
+			body, html {height: 100%; width: 100%;}
+			.page /* Wraps the entire page */
+			{
+				display: grid;
+				grid-template:
+					"header" 70px
+					"body" 1fr
+					"footer" 70px /
+					1fr;
+				width: 100%;
+				height: 100%;
+				background-color: var(--pickupDarkGray);
+			}
+			.header /* Covers very top of page */
+			{
+				grid-area: header''
+				width: 100%;
+				height: 100%;
+				background-color: black;
+			}
+			.footer /* Covers very bottom of page */
+			{
+				grid-area: footer;
+				width: 100%;
+				height: 100%;
+				background-color: black;
+			}
+			.body /* Covers center section of page */
+			{
+				grid-area: body;
+				display: flex;
+				flex-flow: column nowrap;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				height: 100%;
+				background-color: var(--pickupDarkGray);
+			}
+			.panel /* tablet-like structure in middle of page */
+			{
+				display: grid;
+				grid-template:
+					"p-title" 70px
+					"p-content-wrapper" 1fr
+					"p-nav" 70px /
+					1fr;
+				height: 90%;
+				width: 50%;
+				border-radius: 50px;
+				background-color: var(--pickupGray);
+				overflow: hidden;
+			}
+			
+			.p-title
+			{
+				grid-area: p-title;
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: center;
+				align-items: center;
+				font-size: 30px;
+				background-color: var(--pickupDarkGreen);
+				border-top-right-radius: inherit; /* Forces this element to be trimmed by the panel's border-radius */
+				border-top-left-radius: inherit; /* Forces this element to be trimmed by the panel's border-radius */
+			}
+			#p-content-wrapper /* Main body of the panel. Slides to left and right to reveal form subsections */
+			{
+				grid-area: p-content-wrapper;
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: flex-start;
+				align-items: center;
+				grid-template-rows: 1fr;
+				height: 100%;
+				left: 0;
+				/* width: 100% * numberOfSteps; NOTE! Script at bottom of page will set this. Any width will be overridden! */
+				transition: left 0.5s;
+			}
+			.p-content
+			{
+				display: flex;
+				flex-flow: column wrap;
+				justify-content: space-around;
+				align-items: center;
+				height: 100%;
+				/* width: 100% / numberOfSteps; NOTE! Script at bottom of page will set this. Any width will be overridden! */
+			}.p-nav
+			{
+				grid-area: p-nav;
+				display: flex;
+				flex-flow: row wrap;
+				justify-content: space-around;
+				align-items: center;
+				border-bottom-right-radius: inherit; /* Forces this element to be trimmed by the panel's border-radius */
+				border-bottom-left-radius: inherit; /* Forces this element to be trimmed by the panel's border-radius */
+				background-color: var(--pickupDarkGreen);
+			}
+			
+			/*--- Step-Specific CSS ---*/
+			#services-map
+			{
+				display: grid;
+				grid-template:
+					". . . ." 1fr
+					". b a ." 2fr
+					". b o ." 2fr
+					". . t ." 4fr
+					". . . ." 1fr /
+					1fr 3fr 3fr 1fr;
+				width: 80%;
+				height: 75%;
+				background-color: var(--pickupDarkGray);
+			}
+			.service-area
+			{
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: center;
+				align-items: center;
+				text-align: center;
+				position: relative;
+				background-color: var(--pickupGreen);
+				border: 3px solid white;
+			}
+			.service-area:hover
+			{
+				box-shadow: 0px 0px 5px 4px rgba(255, 255, 255, 0.5); /* Glow-effect: (0px 0px) = Centered, (4) = blur, (4px) = radius*/
+				z-index: 5;
+			}
+			.service-area:active
+			{
+				box-shadow: inset 6px 6px 5px rgba(0, 0, 0, 0.5);
+			}
+			#service-brakes {grid-area:b; border-right: none;}
+			#service-alignment {grid-area:a;}
+			#service-oil {grid-area:o; border-top: none;}
+			#service-tires {grid-area:t; border-top: none;}
+			.selected-service /* Applied to the last-selected service area */
+			{
+				background-color: var(--pickupLightGreen);
+			}
+			
+			#date-time-selection
+			{
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: space-around;
+				align-items: center;
+				height: 40%;
+				width: 80%;
+			}
+			#my-dayline
+			{
+				width: 80%;
+				height: 50%;
+				background-color: var(--pickupDarkGray);
+			}
+			
+			#pickup-address
+			{
+				width: 50%;
+			}
+			.map
+			{
+				width: 80%;
+				height: 50%;
+				background-color: var(--pickupDarkGray);
+				background-size: cover;
+				background-position: center, center;
+			}
+			.summary-table
+			{
+				border-collapse: collapse;
+				height: 65%;
+				width: 80%;
+			}
+			.summary-table tr
+			{
+				background-color: var(--pickupDarkGray);
+			}
+			.summary-table td
+			{
+				text-align: right;
+				border: 2px solid white;
+				padding-left: 20px;
+				padding-right: 20px;
+				user-select: text;
+			}
+			.summary-table td:first-child /* Selects td's are that first-childs */
+			{
+				text-align: left;
+			}
+			.summary-table tr:nth-child(even)
+			{
+				background-color: var(--pickupDullGreen);
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="page">                                         <!-- Page-Wrapping Element -->
+			<div class="header">                                   <!-- Leading Bar that covers the top of the page -->
+			</div>
+			<div class="body">                                     <!-- Main Content of the page -->
+				<div class="panel">                                <!-- Center menu area that holds active elements. Visible content changes per step -->
+					<div class="p-title">Pick a Service</div>                                               <!-- Title for Step 1 -->
+					<div class="p-title">Pick a Service Time</div>                                          <!-- Title for Step 2 -->
+					<div class="p-title">Show us Where to Pick Up</div>                                     <!-- Title for Step 3 -->
+					<div class="p-title">Timing Details</div>                                               <!-- Title for Step 4 -->
+					<div class="p-title">Pickup Details</div>                                               <!-- Title for Step 5 -->
+					<div class="p-title">Finalize</div>                                                     <!-- Title for Step 6 -->
+					<div id="p-content-wrapper">                   <!-- Contains all steps -->
+						<div class="p-content">                                                             <!-- Content for Service Selection -->
+							<div id="chosen-service" class="info">Selected Service: ---</div>               <!-- Displays the selected service's title -->
+							<div id="services-map">                                                         <!-- Contains all the zones of the shop -->
+								<div id="service-brakes" class="service-area">Brakes and Transmission</div> <!-- First Zone -->
+								<div id="service-alignment"  class="service-area">Alignment</div>           <!-- Second Zone -->
+								<div id="service-oil"  class="service-area">Oil</div>                       <!-- Third Zone -->
+								<div id="service-tires"  class="service-area">Tires</div>                   <!-- Fourth Zone -->
+							</div>
+						</div>
+						<div class="p-content">                                                             <!-- Content for Service Time Selection -->
+							<div class="info">Select a Day</div>                                            <!-- Label prompting the user to select a day -->
+							<input id="service-date" type="date" class="date-selection">                    <!-- Input for selecting a day -->
+							<div id="my-dayline"></div>                                                     <!-- Dayline which displays availability on the selected day -->
+							<div class="info">                                                              <!-- Label prompting the user to select a time -->
+								Select a Pickup Time<br>This determines how soon we can pick up
+							</div>
+							<div class="horizontal-wrap">                                                   <!-- Forces the interior elements to be laid-out horizontally -->
+								<div class="horizontal-info">Service Start:</div>                           <!-- Small label for the start time selection -->
+								<input id="service-start-time" class="time-selection">                      <!-- Input for selecting a time -->
+								<div class="spacer"></div>                                                  <!-- Small spacer -->
+								<div class="horizontal-info">Service End:</div>                             <!-- Changes to reflect end time -->
+								<input id="service-end-time" readonly class="time-selection">               <!-- Automatically displays end time -->
+							</div>
+						</div>
+						<div class="p-content">                                                             <!-- Content for Address Selection -->
+							<div class="info">Enter Pickup Address and Press "Route"</div>                  <!-- Instructions for route -->
+							<div class="horizontal-wrap">                                                   <!-- Forces the interior elements to be laid-out horizontally -->
+								<input id="pickup-address" type="address">                                  <!-- Address input -->
+								<div class="spacer"></div>                                                  <!-- Small spacer -->
+								<div id="address-button" class="button">Route</div>                         <!-- Submission button for route so as to not overload query -->
+							</div>
+							<div id="pickup-map" class="map"></div>                                         <!-- Displays address and route -->
+							<div class="horizontal-wrap">                                                   <!-- Forces the interior elements to be laid-out horizontally -->
+								<div class="horizontal-info">Route Mileage:</div>                           <!-- Label for inside horizontal wraps -->
+								<input id="mileage-input" readonly>                                         <!-- Displays mileage -->
+							</div>
+							<div class="horizontal-wrap">                                                   <!-- Forces the interior elements to be laid-out horizontally -->
+								<div class="horizontal-info">Travel Time (1-Way):</div>                     <!-- Label for inside horizontal wraps -->
+								<input id="minutes-input" readonly>                                         <!-- Displays est. minutes -->
+							</div>
+						</div>
+						<div class="p-content">                                                             <!-- Timing details Section -->
+							<div class="info">
+								Since 
+							</div>
+						</div>
+						<div class="p-content">                                                             <!-- Pickup details Section -->
+							<div class="info">Tell Us About Your Car</div>                                  <!-- Prompt for car info -->
+							<div class="horizontal-wrap">                                                   <!-- Forces interior elements to be arranged horizontally -->
+								<div class="horizontal-info">Make:</div>                                    <!-- Label for the input -->
+								<input id="make-input">                                                     <!-- Input for care make -->
+							</div>
+							<div class="horizontal-wrap">                                                   <!-- Forces interior elements to be arranged horizontally -->
+								<div class="horizontal-info">Model:</div>                                   <!-- Label for the input -->
+								<input id="model-input">                                                    <!-- Input for care model -->
+							</div>
+							<div class="horizontal-wrap">                                                   <!-- Forces interior elements to be arranged horizontally -->
+								<div class="horizontal-info">Color:</div>                                   <!-- Label for the input -->
+								<input id="color-input">                                                    <!-- Input for care color -->
+							</div>
+							<div class="horizontal-wrap">                                                   <!-- Forces interior elements to be arranged horizontally -->
+								<div class="horizontal-info">Year:</div>                                    <!-- Label for the input -->
+								<input type="number" id="year-input">                                       <!-- Input for care year -->
+							</div>
+							<div class="info">Tell Us Where we can Find The Keys</div>                      <!-- Prompt for key info -->
+							<input class="large-text" id="key-input">                                       <!-- Input for key information -->
+						</div>
+						<div class="p-content">                                                             <!-- Summary Section -->
+							<div class="info">Summary</div>
+							<table class="summary-table">
+								<tbody>
+									<tr>
+										<td>Service</td>
+										<td id="service-output"></td>
+									</tr>
+									<tr>
+										<td>Service Start Time</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Service End Time</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Pickup Time</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Return Time</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Pickup Location</td>
+										<td id="location-output"></td>
+									</tr>
+									<tr>
+										<td>Your Name</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Car</td>
+										<td id="car-output"></td>
+									</tr>
+									<tr>
+										<td>Mileage</td>
+										<td id="mileage-output"></td>
+									</tr>
+									<tr>
+										<td>Pickup Details</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Phone Number</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Email</td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="button">Confirm & Submit</div>
+						</div>
+					</div>
+					<div class="p-nav">                            <!-- Allows movement between steps -->
+						<div id="p-back" class="button">Back</div> <!-- Activating moves to next step -->
+						<div id="p-next" class="button">Next</div> <!-- Activating moves to next step -->
+					</div>
+				</div>
+			</div>
+			<div class="footer">                                   <!-- Ending bar that covers the very bottom of the page -->
+			</div>
+		</div>
+		<!-- <script src="../../Dayline Development/src/dayline.js"></script> -->
+		<script>
+			//----------------------------------------Script Constants/Globals----------------------------------------
+			//Number of step-pages present
+			const numberOfSteps = 6;
+			//Duration of services
+			const brakesDuration = 15;
+			const alignmentDuration = 15;
+			const oilDuration = 15;
+			const tireDuration = 15;
+			//Current step-page (1-indexed)
+			var currentStep = 1;
+			//All revelevant data collected in the form
+			var formData = 
+			{
+				"service": "",
+				"serviceStart": {},
+				"serviceEnd": {},
+				"pickupStart": {},
+				"pickupEnd": {},
+				"pickupDescription": "",
+				"phone": "",
+				"car":
+				{
+					"make": "",
+					"model": "",
+					"year": "",
+					"color": "",
+				},
+				"email": "",
+				"directions": {},
+			};
+			
+			//----------------------------------------Predefined functions----------------------------------------
+			//_______________Advances or reverses to the next section of the form_______________
+			var changeStep = function(magnitude)
+			{
+				if ((currentStep + magnitude) < 1)                       //If the new step would go below the minimum (there is no step 0)
+				{
+					currentStep = 1;                                     //Set the step to 1
+				}
+				else if ((currentStep + magnitude) > numberOfSteps)      //If the new step would exceed the maximum
+				{
+					currentStep = numberOfSteps                          //Set the steps to the maximum
+				}
+				else                                                     //If neither condition is violated
+				{
+					currentStep += magnitude;                            //Change the step forwards or backwards normally
+				}
+				//Below: move the wrapper to the left or right based on the current step. Movement is backwards so that the old contents slide to the left
+				document.getElementById("p-content-wrapper").style.left = ((currentStep - 1) * -100) + "%";
+				var titles = document.getElementsByClassName("p-title"); //Grab all panel titles
+				for (var k = 0; k < titles.length; k++)                  //For each one
+				{
+					titles[k].style.zIndex = 0;                          //Set its index to 0 (lowest level)
+					if (k == (currentStep - 1))                          //If this the nth title, where n is the current step
+					{
+						titles[k].style.zIndex = 5;                      //Bring that title to the front (so it is visible)
+					}
+				}
+			}
+			
+			//_______________Listens for timeline selector to change, then changes the start time to reflect that selected time_______________
+			var updateServiceStartTimeField = function(event)
+			{
+				if (event.selectorType == "start") //A start selector represents a regular left-click on the timeline
+				{
+					document.getElementById("service-start-time").value = event.timeObj.getTime(); //
+					var endTimeObj = Object.assign({}, event.timeObj);                             //
+					endTimeObj.minutes = endTimeObj.minutes + 15;                                  //
+					document.getElementById("service-start-time").value = event.timeObj.getTime(); // 
+					document.getElementById("service-end-time").value = endTimeObj.getTime();      //
+					//console.log("start: " + JSON.stringify(event.timeObj));                      //
+					//console.log("end: " + JSON.stringify(endTimeObj));
+					//console.log("end getTime(): " + endTimeObj.getTime());
+				}
+			}
+			
+			//_______________Changes the position of the selector of the timeline when the user inputs a service start time_______________
+			var updateServiceStartSelector = function(event)
+			{
+				
+			}
+			
+			//_______________Updates the confirm table with the car data_______________
+			var updateCarConfirm = function()
+			{
+				document.getElementById("car-output").innerText = formData.car.color + " " + formData.car.year + " " + formData.car.make + " " + formData.car.model;
+			}
+			
+			//_______________Event listener function that allows the associated element to be selected as a service zone_______________
+			var serviceSelect = function() 
+			{
+				document.getElementById("chosen-service").innerText = "Selected Service: " + this.innerText; //Set the chosen-service box's text to match the selected service
+				var previouslySelected = document.getElementsByClassName("selected-service");                //Look for the last selected service-area
+				for (var j = 0; j < previouslySelected.length; j++)                                          //For each other element that had been selected
+				{
+					previouslySelected[j].classList.remove("selected-service");                              //Remove the styling
+				}
+				this.classList.add("selected-service");                                                      //Add the selection-styling back to this class
+				formData.service = this.innerText;                                                           //The name of this field becomes the selected service
+			}
+			
+			//_______________Event listener function that pulls up routes when address is given_______________
+			var makeRoute = function()
+			{
+				//console.log(this.value);
+				var mapDiv = document.getElementById("pickup-map");                                  //Grab map box
+				var pxWidth = mapDiv.getBoundingClientRect().width;                                  //Grab map box width
+				var pxHeight = mapDiv.getBoundingClientRect().height;                                //Grab map box height
+				//console.log("pxWidth: " + pxWidth);
+				//console.log("pxHeight: " + pxHeight);
+				google.script.run.withSuccessHandler(function(data)                                  //
+				{
+					mapDiv.style.backgroundImage = "url(" + data.mapData + ")";                      //Display the map image
+					document.getElementById("mileage-input").value = data.totalRouteMileageStr;      //String displaying mile number
+					document.getElementById("mileage-output").innerText = data.totalRouteMileageStr; //Update confirm table
+					document.getElementById("minutes-input").value = data.routeTimeStr;              //String display minute number
+					document.getElementById("location-ouput").innerText = data.directions.routes[0].legs[0].start_address;
+				}).generateRoute(document.getElementById("pickup-address").value, pxWidth, pxHeight);//Pass through address and map box size (so the map image is correctly sized) and get the route data
+			}
+			
+			//----------------------------------------Run on page load----------------------------------------
+			//_______________Begin running the dayline gui_______________
+			//var dlObj = new Dayline(false, false);                                                 //Create the dayline object. Neither categorical conflicts or regular conflicts are allowed
+			//document.getElementById("my-dayline").appendChild(dlObj.getDisplay());                 //Cause the dayline to display in the form
+			
+			//_______________Correct Order of p-titles to allow correct ordering_______________
+			changeStep(0);                                                                           //Fixes z-indexing of titles
+			
+			//_______________Fix the widths of the content-wrapper and contents to fit the number of pages_______________
+			document.getElementById("p-content-wrapper").style.width = (numberOfSteps * 100) + "%";  //The width of the wrapper is equal to 100% times the number of steps. (e.g. if there are 5 steps, it must be 500%)
+			var pContents = document.getElementsByClassName("p-content");                            //Grabs all p-content elements that compose the sliding wrapper
+			for (var h = 0; h < pContents.length; h++)                                               //For each one
+			{
+				pContents[h].style.width = (100 / numberOfSteps) + "%";                              //Set the width to be an even division of the wrapper (e.g. if there are 5 steps, each is 20%)
+			}
+			
+			//_______________Affix event listeners_______________
+			document.getElementById("p-back").addEventListener("click", function(){changeStep(-1)}); //Enables the 'next' button to go to the next step
+			document.getElementById("p-next").addEventListener("click", function(){changeStep(1)});  //Enables the 'back' button to go to the previous step
+			var serviceAreas = document.getElementsByClassName("service-area");                      //Grab all div selected as service-areas
+			for (var g = 0; g < serviceAreas.length; g++)                                            //For each one of those elements
+			{
+				serviceAreas[g].addEventListener("click", serviceSelect);                            //Call enableServiceSelection on it
+			}
+			document.getElementById("service-date").addEventListener("input", function()             //Listens for changes to the selected date
+			{
+				console.log(this.value);
+			});
+			document.getElementById("address-button").addEventListener("click", makeRoute)           //Makes makeRoute listen for address changes
+			document.getElementById("make-input").addEventListener("input", function()
+			{
+				formData.car.make = this.value;
+				updateCarConfirm();
+			});
+			document.getElementById("model-input").addEventListener("input", function()
+			{
+				formData.car.model = this.value;
+				updateCarConfirm();
+			});
+			document.getElementById("color-input").addEventListener("input", function()
+			{
+				formData.car.color = this.value;
+				updateCarConfirm();
+			});
+			document.getElementById("year-input").addEventListener("input", function()
+			{
+				formData.car.year = this.value;
+				updateCarConfirm();
+			});
+			//dlObj.addEventListener("selectorChange", updateServiceStartTimeField);                 //Causes the service-start-time field to change when the user selects a time
+			//AIzaSyDckp4lXhfH2ktCemI1LurhWwUJDlE_brE
+		</script>
+	</body>
+</html>
