@@ -378,20 +378,20 @@
 										<td id="service-output"></td>
 									</tr>
 									<tr>
-										<td>Service Start Time</td>
-										<td></td>
-									</tr>
-									<tr>
-										<td>Service End Time</td>
-										<td></td>
-									</tr>
-									<tr>
 										<td>Pickup Time</td>
-										<td></td>
+										<td id="pickup-start-output"></td>
 									</tr>
 									<tr>
 										<td>Return Time</td>
-										<td></td>
+										<td id="pickup-end-output"></td>
+									</tr>
+									<tr>
+										<td>Service Start Time</td>
+										<td id="service-start-output"></td>
+									</tr>
+									<tr>
+										<td>Service End Time</td>
+										<td id="service-end-output"></td>
 									</tr>
 									<tr>
 										<td>Pickup Location</td>
@@ -399,7 +399,7 @@
 									</tr>
 									<tr>
 										<td>Your Name</td>
-										<td></td>
+										<td id="name-output"></td>
 									</tr>
 									<tr>
 										<td>Car</td>
@@ -410,16 +410,16 @@
 										<td id="mileage-output"></td>
 									</tr>
 									<tr>
-										<td>Pickup Details</td>
-										<td></td>
+										<td>Key-Pickup Details</td>
+										<td id="key-details-output"></td>
 									</tr>
 									<tr>
 										<td>Phone Number</td>
-										<td></td>
+										<td id="phone-output"></td>
 									</tr>
 									<tr>
 										<td>Email</td>
-										<td></td>
+										<td id="email-output"></td>
 									</tr>
 								</tbody>
 							</table>
@@ -435,7 +435,7 @@
 			<div class="footer">                                   <!-- Ending bar that covers the very bottom of the page -->
 			</div>
 		</div>
-		<!-- <script src="../../Dayline Development/src/dayline.js"></script> -->
+		<script src="../../../Dayline Repo/Dayline Development/src/dayline.js"></script>
 		<script>
 			//----------------------------------------Script Constants/Globals----------------------------------------
 			//Number of step-pages present
@@ -451,11 +451,11 @@
 			var formData = 
 			{
 				"service": "",
-				"serviceStart": {},
-				"serviceEnd": {},
-				"pickupStart": {},
-				"pickupEnd": {},
-				"pickupDescription": "",
+				"serviceStart": {},         //DTime object
+				"serviceEnd": {},           //DTime object
+				"pickupStart": {},          //DTime object
+				"pickupEnd": {},            //DTime object
+				"keyDetails": "",           //How to get the keys
 				"phone": "",
 				"car":
 				{
@@ -469,6 +469,26 @@
 			};
 			
 			//----------------------------------------Predefined functions----------------------------------------
+			//_______________Updates the form to reflect the formData data_______________
+			var updateForm = function()
+			{
+				document.getElementById("service-output").innerText = formData.service;
+				document.getElementById("service-start-time").innerText = formData.serviceStart.getTime(); // 
+				document.getElementById("service-end-time").innerText = formData.serviceEnd.getTime();     //
+				document.getElementById("pickup-start-output").innerText = formData.pickupStart.getTime(); //
+				document.getElementById("pickup-end-output").innerText = formData.pickupEnd.getTime();     //
+				document.getElementById("name-output").innerText = formData.name;                          //
+				document.getElementById("location-output").innerText = formData.location;                  //
+				document.getElementById("phone-output").innerText = formData.phone;                        //
+				document.getElementById("email-output").innerText = formData.email;                        //
+				document.getElementById("key-details-output").innerText = formData.keyDetails;             //
+				document.getElementById("mileage-output").innerText = formData.mileage;                    //
+				document.getElementById("mileage-input").value = formData.mileage;                         //String displaying mile number
+				document.getElementById("minutes-input").value = formData.duration;                        //String display minute number
+				document.getElementById("location-ouput").innerText = formData.directions.routes[0].legs[0].start_address;
+				document.getElementById("car-output").innerText = formData.car.color + " " + formData.car.year + " " + formData.car.make + " " + formData.car.model;
+			}
+			
 			//_______________Advances or reverses to the next section of the form_______________
 			var changeStep = function(magnitude)
 			{
@@ -500,29 +520,23 @@
 			//_______________Listens for timeline selector to change, then changes the start time to reflect that selected time_______________
 			var updateServiceStartTimeField = function(event)
 			{
-				if (event.selectorType == "start") //A start selector represents a regular left-click on the timeline
-				{
-					document.getElementById("service-start-time").value = event.timeObj.getTime(); //
-					var endTimeObj = Object.assign({}, event.timeObj);                             //
-					endTimeObj.minutes = endTimeObj.minutes + 15;                                  //
-					document.getElementById("service-start-time").value = event.timeObj.getTime(); // 
-					document.getElementById("service-end-time").value = endTimeObj.getTime();      //
-					//console.log("start: " + JSON.stringify(event.timeObj));                      //
-					//console.log("end: " + JSON.stringify(endTimeObj));
-					//console.log("end getTime(): " + endTimeObj.getTime());
-				}
+				document.getElementById("service-start-time").value = event.timeObj.getTime(); //
+				var endTimeObj = Object.assign({}, event.timeObj);                             //
+				endTimeObj.minutes = endTimeObj.minutes + 15;                                  //
 			}
 			
 			//_______________Changes the position of the selector of the timeline when the user inputs a service start time_______________
 			var updateServiceStartSelector = function(event)
 			{
-				
+				formData.serviceStart = Dayline.DTime(this.value);
+				formData.serviceEnd = Dayline.DTime(this.value);
+				updateForm();
 			}
 			
 			//_______________Updates the confirm table with the car data_______________
 			var updateCarConfirm = function()
 			{
-				document.getElementById("car-output").innerText = formData.car.color + " " + formData.car.year + " " + formData.car.make + " " + formData.car.model;
+				
 			}
 			
 			//_______________Event listener function that allows the associated element to be selected as a service zone_______________
@@ -545,22 +559,23 @@
 				var mapDiv = document.getElementById("pickup-map");                                  //Grab map box
 				var pxWidth = mapDiv.getBoundingClientRect().width;                                  //Grab map box width
 				var pxHeight = mapDiv.getBoundingClientRect().height;                                //Grab map box height
+				mapDiv.width = pxWidth;                                                              //Fix its width 
+				mapDiv.height = pxHeight;                                                            //Fix its height
 				//console.log("pxWidth: " + pxWidth);
 				//console.log("pxHeight: " + pxHeight);
 				google.script.run.withSuccessHandler(function(data)                                  //
 				{
+					formData.directions = data.directions;
+					formData.mileage = data.totalRouteMileageStr;
+					formData.duration = data.routeTimeStr;
 					mapDiv.style.backgroundImage = "url(" + data.mapData + ")";                      //Display the map image
-					document.getElementById("mileage-input").value = data.totalRouteMileageStr;      //String displaying mile number
-					document.getElementById("mileage-output").innerText = data.totalRouteMileageStr; //Update confirm table
-					document.getElementById("minutes-input").value = data.routeTimeStr;              //String display minute number
-					document.getElementById("location-ouput").innerText = data.directions.routes[0].legs[0].start_address;
 				}).generateRoute(document.getElementById("pickup-address").value, pxWidth, pxHeight);//Pass through address and map box size (so the map image is correctly sized) and get the route data
 			}
 			
 			//----------------------------------------Run on page load----------------------------------------
 			//_______________Begin running the dayline gui_______________
-			//var dlObj = new Dayline(false, false);                                                 //Create the dayline object. Neither categorical conflicts or regular conflicts are allowed
-			//document.getElementById("my-dayline").appendChild(dlObj.getDisplay());                 //Cause the dayline to display in the form
+			var dlObj = new Dayline(false);                                                 //Create the dayline object. Neither categorical conflicts or regular conflicts are allowed
+			document.getElementById("my-dayline").appendChild(dlObj.getDisplay());                 //Cause the dayline to display in the form
 			
 			//_______________Correct Order of p-titles to allow correct ordering_______________
 			changeStep(0);                                                                           //Fixes z-indexing of titles
@@ -589,23 +604,24 @@
 			document.getElementById("make-input").addEventListener("input", function()
 			{
 				formData.car.make = this.value;
-				updateCarConfirm();
+				updateForm();
 			});
 			document.getElementById("model-input").addEventListener("input", function()
 			{
 				formData.car.model = this.value;
-				updateCarConfirm();
+				updateForm();
 			});
 			document.getElementById("color-input").addEventListener("input", function()
 			{
 				formData.car.color = this.value;
-				updateCarConfirm();
+				updateForm();
 			});
 			document.getElementById("year-input").addEventListener("input", function()
 			{
 				formData.car.year = this.value;
-				updateCarConfirm();
+				updateForm();
 			});
+			document.getElementById("service-start-time").addEventListener("input", updateServiceStartSelector); //When you input a service-start, update the selector on the dayline
 			//dlObj.addEventListener("selectorChange", updateServiceStartTimeField);                 //Causes the service-start-time field to change when the user selects a time
 			//AIzaSyDckp4lXhfH2ktCemI1LurhWwUJDlE_brE
 		</script>

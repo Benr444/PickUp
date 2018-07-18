@@ -41,7 +41,7 @@
  
 ### 7/18
 
-**2.5Hours as of 5pm**
+**3.5Hours as of 5pm**
 
 - Implemented addEventListener and triggerEvent. Not all events are implemented, however
 - Capitalized dFrame and dTime constructors
@@ -53,3 +53,4 @@
 - Fixed a bug with popups displaying initially
 - Fixed a bug where dTimes with no constructor input would return an getTime of "0:00"
 - Fixed a bug where dTimes could not be constructed from dTimes
+- Added updateForm to streamline data updating
