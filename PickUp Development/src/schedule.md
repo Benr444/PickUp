@@ -41,7 +41,7 @@
  
 ### 7/18
 
-**3.5Hours as of 5pm**
+**3.5 Hours**
 
 - Implemented addEventListener and triggerEvent. Not all events are implemented, however
 - Capitalized dFrame and dTime constructors
@@ -54,3 +54,18 @@
 - Fixed a bug where dTimes with no constructor input would return an getTime of "0:00"
 - Fixed a bug where dTimes could not be constructed from dTimes
 - Added updateForm to streamline data updating
+
+### 7/20
+
+**2 Hours**
+
+- todo: additional input scrubbing for dTime
+- Began fixing time inputs on form. Added getDefault method to dTime
+- getDefault method still requires more fixes to work.
+
+### 7/21
+
+**4 Hours**
+
+- Complete revamp of main form. Cut all coordination with auto shop for now.
+- todo: route and time estimation

@@ -23,6 +23,7 @@
 				margin: 0;
 				padding: 0;
 				font-family: consolas;
+				font-size: 16px;
 				text-transform: uppercase;
 				color: white;
 				user-select: none; /* No text selection allowed */
@@ -61,13 +62,14 @@
 				align-items: center;
 				width: 80%;
 				padding: 10px 30px 10px 30px;
-				font-size: 15px;
+				font-size: 18px;
 				text-align: center;
 				background-color: var(--pickupDarkGray);
 			}
 			.horizontal-info
 			{
 				background-color: var(--pickupDarkGray);
+				font-size: 18px;
 			}
 			.horizontal-wrap
 			{
@@ -82,11 +84,18 @@
 			{
 				color: black;
 				width: 25%;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				font-size: 20px;
 			}
 			.large-text
 			{
 				width: 50%;
 				height: 25%;
+			}
+			.address
+			{
+				width: 50%;
 			}
 			
 			/*--- Page-Elements CSS ---*/
@@ -241,21 +250,11 @@
 				height: 40%;
 				width: 80%;
 			}
-			#my-dayline
-			{
-				width: 80%;
-				height: 50%;
-				background-color: var(--pickupDarkGray);
-			}
 			
-			#pickup-address
-			{
-				width: 50%;
-			}
 			.map
 			{
 				width: 80%;
-				height: 50%;
+				height: 50%;	
 				background-color: var(--pickupDarkGray);
 				background-size: cover;
 				background-position: center, center;
@@ -263,7 +262,6 @@
 			.summary-table
 			{
 				border-collapse: collapse;
-				height: 65%;
 				width: 80%;
 			}
 			.summary-table tr
@@ -276,7 +274,10 @@
 				border: 2px solid white;
 				padding-left: 20px;
 				padding-right: 20px;
+				padding-top: 5px;
+				padding-bottom: 5px;
 				user-select: text;
+				font-size: 18px;
 			}
 			.summary-table td:first-child /* Selects td's are that first-childs */
 			{
@@ -295,41 +296,35 @@
 			</div>
 			<div class="body">                                     <!-- Main Content of the page -->
 				<div class="panel">                                <!-- Center menu area that holds active elements. Visible content changes per step -->
-					<div class="p-title">Pick a Service</div>                                               <!-- Title for Step 1 -->
-					<div class="p-title">Pick a Service Time</div>                                          <!-- Title for Step 2 -->
-					<div class="p-title">Show us Where to Pick Up</div>                                     <!-- Title for Step 3 -->
-					<div class="p-title">Timing Details</div>                                               <!-- Title for Step 4 -->
-					<div class="p-title">Pickup Details</div>                                               <!-- Title for Step 5 -->
+					<div class="p-title">Tell Us About Your Appointment</div>                               <!-- Title for Step 2 -->
+					<div class="p-title">Show Us Where to Pick Up</div>                                     <!-- Title for Step 3 -->
+					<div class="p-title">Contact Information</div>                                          <!-- Title for Step 4 -->
+					<div class="p-title">Car Details</div>                                                  <!-- Title for Step 5 -->
 					<div class="p-title">Finalize</div>                                                     <!-- Title for Step 6 -->
 					<div id="p-content-wrapper">                   <!-- Contains all steps -->
-						<div class="p-content">                                                             <!-- Content for Service Selection -->
-							<div id="chosen-service" class="info">Selected Service: ---</div>               <!-- Displays the selected service's title -->
-							<div id="services-map">                                                         <!-- Contains all the zones of the shop -->
-								<div id="service-brakes" class="service-area">Brakes and Transmission</div> <!-- First Zone -->
-								<div id="service-alignment"  class="service-area">Alignment</div>           <!-- Second Zone -->
-								<div id="service-oil"  class="service-area">Oil</div>                       <!-- Third Zone -->
-								<div id="service-tires"  class="service-area">Tires</div>                   <!-- Fourth Zone -->
-							</div>
-						</div>
 						<div class="p-content">                                                             <!-- Content for Service Time Selection -->
 							<div class="info">Select a Day</div>                                            <!-- Label prompting the user to select a day -->
 							<input id="service-date" type="date" class="date-selection">                    <!-- Input for selecting a day -->
-							<div id="my-dayline"></div>                                                     <!-- Dayline which displays availability on the selected day -->
 							<div class="info">                                                              <!-- Label prompting the user to select a time -->
-								Select a Pickup Time<br>This determines how soon we can pick up
+								Tell Us When Your Service Starts and Ends
 							</div>
 							<div class="horizontal-wrap">                                                   <!-- Forces the interior elements to be laid-out horizontally -->
 								<div class="horizontal-info">Service Start:</div>                           <!-- Small label for the start time selection -->
-								<input id="service-start-time" class="time-selection">                      <!-- Input for selecting a time -->
+								<input id="service-start-input" class="time-selection">                      <!-- Input for selecting a time -->
 								<div class="spacer"></div>                                                  <!-- Small spacer -->
 								<div class="horizontal-info">Service End:</div>                             <!-- Changes to reflect end time -->
-								<input id="service-end-time" readonly class="time-selection">               <!-- Automatically displays end time -->
+								<input id="service-end-input" class="time-selection">               <!-- Automatically displays end time -->
+							</div>
+							<div class="info">Specify Pick up Location</div>
+							<div class="horizontal-wrap">
+								<div class="horizontal-info">(James Bolton Auto Shop):</div>
+								<input id="service-location-input" value="1491 Union St Spartanburg, SC 29302" readonly="readonly" class="address">	
 							</div>
 						</div>
 						<div class="p-content">                                                             <!-- Content for Address Selection -->
 							<div class="info">Enter Pickup Address and Press "Route"</div>                  <!-- Instructions for route -->
 							<div class="horizontal-wrap">                                                   <!-- Forces the interior elements to be laid-out horizontally -->
-								<input id="pickup-address" type="address">                                  <!-- Address input -->
+								<input id="pickup-address" type="address" class="address">                  <!-- Address input -->
 								<div class="spacer"></div>                                                  <!-- Small spacer -->
 								<div id="address-button" class="button">Route</div>                         <!-- Submission button for route so as to not overload query -->
 							</div>
@@ -343,10 +338,13 @@
 								<input id="minutes-input" readonly>                                         <!-- Displays est. minutes -->
 							</div>
 						</div>
-						<div class="p-content">                                                             <!-- Timing details Section -->
-							<div class="info">
-								Since 
-							</div>
+						<div class="p-content">
+							<div class="info">Enter Your Full Name</div>
+							<input id="name-input" type="text">
+							<div class="info">Enter Your Phone Number</div>
+							<input id="phone-input" type="number">
+							<div class="info">Enter Your Email Address</div>
+							<input id="email-input" type="email">
 						</div>
 						<div class="p-content">                                                             <!-- Pickup details Section -->
 							<div class="info">Tell Us About Your Car</div>                                  <!-- Prompt for car info -->
@@ -374,16 +372,20 @@
 							<table class="summary-table">
 								<tbody>
 									<tr>
-										<td>Service</td>
-										<td id="service-output"></td>
+										<td>Date</td>
+										<td id="date-output"></td>
+									</tr>
+									<tr>
+										<td>Pickup Location</td>
+										<td id="pickup-location-output"></td>
+									</tr>
+									<tr>
+										<td>Service Location</td>
+										<td id="service-location-output"></td>
 									</tr>
 									<tr>
 										<td>Pickup Time</td>
 										<td id="pickup-start-output"></td>
-									</tr>
-									<tr>
-										<td>Return Time</td>
-										<td id="pickup-end-output"></td>
 									</tr>
 									<tr>
 										<td>Service Start Time</td>
@@ -394,24 +396,32 @@
 										<td id="service-end-output"></td>
 									</tr>
 									<tr>
-										<td>Pickup Location</td>
-										<td id="location-output"></td>
+										<td>Return Time</td>
+										<td id="pickup-end-output"></td>
 									</tr>
-									<tr>
-										<td>Your Name</td>
-										<td id="name-output"></td>
-									</tr>
+								</tbody>
+							</table>
+							<table class="summary-table">
+								<tbody>
 									<tr>
 										<td>Car</td>
 										<td id="car-output"></td>
 									</tr>
 									<tr>
-										<td>Mileage</td>
-										<td id="mileage-output"></td>
+										<td>Key Pick up Details</td>
+										<td id="key-details-output"></td>
 									</tr>
 									<tr>
-										<td>Key-Pickup Details</td>
-										<td id="key-details-output"></td>
+										<td>Distance of Route</td>
+										<td id="mileage-output"></td>
+									</tr>
+								</tbody> 
+							</table>
+							<table class="summary-table">
+								<tbody>
+									<tr>
+										<td>Your Name</td>
+										<td id="name-output"></td>
 									</tr>
 									<tr>
 										<td>Phone Number</td>
@@ -435,11 +445,11 @@
 			<div class="footer">                                   <!-- Ending bar that covers the very bottom of the page -->
 			</div>
 		</div>
-		<script src="../../../Dayline Repo/Dayline Development/src/dayline.js"></script>
+		<script src="../../../Dayline Repo/Dayline Development/src/dTime.js"></script>
 		<script>
 			//----------------------------------------Script Constants/Globals----------------------------------------
 			//Number of step-pages present
-			const numberOfSteps = 6;
+			const numberOfSteps = 5;
 			//Duration of services
 			const brakesDuration = 15;
 			const alignmentDuration = 15;
@@ -450,11 +460,11 @@
 			//All revelevant data collected in the form
 			var formData = 
 			{
-				"service": "",
-				"serviceStart": {},         //DTime object
-				"serviceEnd": {},           //DTime object
-				"pickupStart": {},          //DTime object
-				"pickupEnd": {},            //DTime object
+				"name": "",                 //User's Name
+				"serviceStart": "",         //DTime object
+				"serviceEnd": "",           //DTime object
+				"pickupStart": "",          //DTime object
+				"pickupEnd": "",            //DTime object
 				"keyDetails": "",           //How to get the keys
 				"phone": "",
 				"car":
@@ -465,27 +475,40 @@
 					"color": "",
 				},
 				"email": "",
-				"directions": {},
+				"directions": null,
+				"mileage": "",
+				"duration": "",             //Driving minutes one way between service and location
+				"pickupLocation": "",       //Pick up address
+				"serviceLocation": "James Bolton Auto Shop",      //Service location (car shop, etc)
+				"date": "",
 			};
 			
 			//----------------------------------------Predefined functions----------------------------------------
 			//_______________Updates the form to reflect the formData data_______________
 			var updateForm = function()
 			{
-				document.getElementById("service-output").innerText = formData.service;
-				document.getElementById("service-start-time").innerText = formData.serviceStart.getTime(); // 
-				document.getElementById("service-end-time").innerText = formData.serviceEnd.getTime();     //
-				document.getElementById("pickup-start-output").innerText = formData.pickupStart.getTime(); //
-				document.getElementById("pickup-end-output").innerText = formData.pickupEnd.getTime();     //
+				document.getElementById("date-output").innerText = formData.date;
+				if (typeof formData.serviceStart == "object")
+				{document.getElementById("service-start-output").innerText = formData.serviceStart.getTime();} //
+				if (typeof formData.serviceEnd == "object")
+				{document.getElementById("service-end-output").innerText = formData.serviceEnd.getTime();}    //
+				if (typeof formData.pickupStart == "object")
+				{document.getElementById("pickup-start-output").innerText = formData.pickupStart.getTime();} //
+				if (typeof formData.pickupEnd == "object")
+				{document.getElementById("pickup-end-output").innerText = formData.pickupEnd.getTime();}     //
 				document.getElementById("name-output").innerText = formData.name;                          //
-				document.getElementById("location-output").innerText = formData.location;                  //
+				document.getElementById("pickup-location-output").innerText = formData.pickupLocation;                  //
+				document.getElementById("service-location-output").innerText = formData.serviceLocation;                  //
 				document.getElementById("phone-output").innerText = formData.phone;                        //
 				document.getElementById("email-output").innerText = formData.email;                        //
 				document.getElementById("key-details-output").innerText = formData.keyDetails;             //
 				document.getElementById("mileage-output").innerText = formData.mileage;                    //
 				document.getElementById("mileage-input").value = formData.mileage;                         //String displaying mile number
 				document.getElementById("minutes-input").value = formData.duration;                        //String display minute number
-				document.getElementById("location-ouput").innerText = formData.directions.routes[0].legs[0].start_address;
+				if (formData.directions != null)
+				{
+					document.getElementById("location-ouput").innerText = formData.directions.routes[0].legs[0].start_address;
+				}
 				document.getElementById("car-output").innerText = formData.car.color + " " + formData.car.year + " " + formData.car.make + " " + formData.car.model;
 			}
 			
@@ -517,41 +540,6 @@
 				}
 			}
 			
-			//_______________Listens for timeline selector to change, then changes the start time to reflect that selected time_______________
-			var updateServiceStartTimeField = function(event)
-			{
-				document.getElementById("service-start-time").value = event.timeObj.getTime(); //
-				var endTimeObj = Object.assign({}, event.timeObj);                             //
-				endTimeObj.minutes = endTimeObj.minutes + 15;                                  //
-			}
-			
-			//_______________Changes the position of the selector of the timeline when the user inputs a service start time_______________
-			var updateServiceStartSelector = function(event)
-			{
-				formData.serviceStart = Dayline.DTime(this.value);
-				formData.serviceEnd = Dayline.DTime(this.value);
-				updateForm();
-			}
-			
-			//_______________Updates the confirm table with the car data_______________
-			var updateCarConfirm = function()
-			{
-				
-			}
-			
-			//_______________Event listener function that allows the associated element to be selected as a service zone_______________
-			var serviceSelect = function() 
-			{
-				document.getElementById("chosen-service").innerText = "Selected Service: " + this.innerText; //Set the chosen-service box's text to match the selected service
-				var previouslySelected = document.getElementsByClassName("selected-service");                //Look for the last selected service-area
-				for (var j = 0; j < previouslySelected.length; j++)                                          //For each other element that had been selected
-				{
-					previouslySelected[j].classList.remove("selected-service");                              //Remove the styling
-				}
-				this.classList.add("selected-service");                                                      //Add the selection-styling back to this class
-				formData.service = this.innerText;                                                           //The name of this field becomes the selected service
-			}
-			
 			//_______________Event listener function that pulls up routes when address is given_______________
 			var makeRoute = function()
 			{
@@ -573,10 +561,6 @@
 			}
 			
 			//----------------------------------------Run on page load----------------------------------------
-			//_______________Begin running the dayline gui_______________
-			var dlObj = new Dayline(false);                                                 //Create the dayline object. Neither categorical conflicts or regular conflicts are allowed
-			document.getElementById("my-dayline").appendChild(dlObj.getDisplay());                 //Cause the dayline to display in the form
-			
 			//_______________Correct Order of p-titles to allow correct ordering_______________
 			changeStep(0);                                                                           //Fixes z-indexing of titles
 			
@@ -598,7 +582,45 @@
 			}
 			document.getElementById("service-date").addEventListener("input", function()             //Listens for changes to the selected date
 			{
-				console.log(this.value);
+				formData.date = this.value;
+				updateForm();
+			});
+			document.getElementById("service-start-input").addEventListener("input", function()
+			{
+				formData.serviceStart = new DTime(this.value);
+				formData.pickupStart = new DTime(formData.serviceStart.getTotalMinutes() - 30)
+				updateForm();
+			});
+			document.getElementById("service-end-input").addEventListener("input", function()
+			{
+				formData.serviceEnd = new DTime(this.value);
+				formData.pickupEnd = new DTime(formData.serviceEnd.getTotalMinutes() + 30)
+				updateForm();
+			});
+			document.getElementById("service-location-input").addEventListener("input", function()
+			{
+				formData.serviceLocation = this.value;
+				updateForm();
+			});
+			document.getElementById("name-input").addEventListener("input", function()
+			{
+				formData.name = this.value;
+				updateForm();
+			});
+			document.getElementById("phone-input").addEventListener("input", function()
+			{
+				formData.phone = this.value;
+				updateForm();
+			});
+			document.getElementById("email-input").addEventListener("input", function()
+			{
+				formData.email = this.value;
+				updateForm();
+			});
+			document.getElementById("key-input").addEventListener("input", function()
+			{
+				formData.keyDetails = this.value;
+				updateForm();
 			});
 			document.getElementById("address-button").addEventListener("click", makeRoute)           //Makes makeRoute listen for address changes
 			document.getElementById("make-input").addEventListener("input", function()
@@ -621,7 +643,6 @@
 				formData.car.year = this.value;
 				updateForm();
 			});
-			document.getElementById("service-start-time").addEventListener("input", updateServiceStartSelector); //When you input a service-start, update the selector on the dayline
 			//dlObj.addEventListener("selectorChange", updateServiceStartTimeField);                 //Causes the service-start-time field to change when the user selects a time
 			//AIzaSyDckp4lXhfH2ktCemI1LurhWwUJDlE_brE
 		</script>
