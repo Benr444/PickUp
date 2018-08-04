@@ -256,7 +256,8 @@
 				width: 80%;
 				height: 50%;	
 				background-color: var(--pickupDarkGray);
-				background-size: cover;
+				background-size: contain;
+				background-repeat: no-repeat;
 				background-position: center, center;
 			}
 			.summary-table
@@ -303,69 +304,69 @@
 					<div class="p-title">Finalize</div>                                                     <!-- Title for Step 6 -->
 					<div id="p-content-wrapper">                   <!-- Contains all steps -->
 						<div class="p-content">                                                             <!-- Content for Service Time Selection -->
-							<div class="info">Select a Day</div>                                            <!-- Label prompting the user to select a day -->
-							<input id="service-date" type="date" class="date-selection">                    <!-- Input for selecting a day -->
+							<div class="info">Select the Day</div>                                          <!-- Label prompting the user to select a day -->
+							<input id="service-date" type="date" class="date-selection" required>           <!-- Input for selecting a day -->
 							<div class="info">                                                              <!-- Label prompting the user to select a time -->
 								Tell Us When Your Service Starts and Ends
 							</div>
 							<div class="horizontal-wrap">                                                   <!-- Forces the interior elements to be laid-out horizontally -->
 								<div class="horizontal-info">Service Start:</div>                           <!-- Small label for the start time selection -->
-								<input id="service-start-input" class="time-selection">                     <!-- Input for selecting a time -->
+								<input required id="service-start-input" class="time-selection">                     <!-- Input for selecting a time -->
 								<div class="spacer"></div>                                                  <!-- Small spacer -->
 								<div class="horizontal-info">Service End:</div>                             <!-- Changes to reflect end time -->
-								<input id="service-end-input" class="time-selection">                       <!-- Automatically displays end time -->
+								<input required id="service-end-input" class="time-selection">                       <!-- Automatically displays end time -->
 							</div>
 							<div class="info">Specify Pick up Location</div>
 							<div class="horizontal-wrap">
 								<div class="horizontal-info">(James Bolton Auto Shop):</div>
-								<input id="service-location-input" value="1491 Union St Spartanburg, SC 29302" readonly="readonly" class="address">	
+								<input required id="service-location-input" value="1491 Union St Spartanburg, SC 29302" readonly="readonly" class="address">	
 							</div>
 						</div>
 						<div class="p-content">                                                             <!-- Content for Address Selection -->
 							<div class="info">Enter Pickup Address and Press "Route"</div>                  <!-- Instructions for route -->
 							<div class="horizontal-wrap">                                                   <!-- Forces the interior elements to be laid-out horizontally -->
-								<input id="pickup-address" type="address" class="address">                  <!-- Address input -->
+								<input required id="pickup-address" type="address" class="address">                  <!-- Address input -->
 								<div class="spacer"></div>                                                  <!-- Small spacer -->
 								<div id="address-button" class="button">Route</div>                         <!-- Submission button for route so as to not overload query -->
 							</div>
 							<div id="pickup-map" class="map"></div>                                         <!-- Displays address and route -->
 							<div class="horizontal-wrap">                                                   <!-- Forces the interior elements to be laid-out horizontally -->
 								<div class="horizontal-info">Route Mileage:</div>                           <!-- Label for inside horizontal wraps -->
-								<input id="mileage-input" readonly>                                         <!-- Displays mileage -->
+								<input style="width: 50%;" required id="mileage-input" readonly>            <!-- Displays mileage -->
 							</div>
 							<div class="horizontal-wrap">                                                   <!-- Forces the interior elements to be laid-out horizontally -->
 								<div class="horizontal-info">Travel Time (1-Way):</div>                     <!-- Label for inside horizontal wraps -->
-								<input id="minutes-input" readonly>                                         <!-- Displays est. minutes -->
+								<input required id="minutes-input" readonly>                                         <!-- Displays est. minutes -->
 							</div>
 						</div>
 						<div class="p-content">
 							<div class="info">Enter Your Full Name</div>
-							<input id="name-input" type="text">
+							<input required id="name-input" type="text">
 							<div class="info">Enter Your Phone Number</div>
-							<input id="phone-input" type="number">
+							<input required id="phone-input" type="number">
 							<div class="info">Enter Your Email Address</div>
-							<input id="email-input" type="email">
+							<input required id="email-input" type="email">
 						</div>
 						<div class="p-content">                                                             <!-- Pickup details Section -->
 							<div class="info">Tell Us About Your Car</div>                                  <!-- Prompt for car info -->
 							<div class="horizontal-wrap">                                                   <!-- Forces interior elements to be arranged horizontally -->
 								<div class="horizontal-info">Make:</div>                                    <!-- Label for the input -->
-								<input id="make-input">                                                     <!-- Input for care make -->
+								<input required id="make-input">                                                     <!-- Input for care make -->
 							</div>
 							<div class="horizontal-wrap">                                                   <!-- Forces interior elements to be arranged horizontally -->
 								<div class="horizontal-info">Model:</div>                                   <!-- Label for the input -->
-								<input id="model-input">                                                    <!-- Input for care model -->
+								<input required id="model-input">                                                    <!-- Input for care model -->
 							</div>
 							<div class="horizontal-wrap">                                                   <!-- Forces interior elements to be arranged horizontally -->
 								<div class="horizontal-info">Color:</div>                                   <!-- Label for the input -->
-								<input id="color-input">                                                    <!-- Input for care color -->
+								<input required id="color-input">                                                    <!-- Input for care color -->
 							</div>
 							<div class="horizontal-wrap">                                                   <!-- Forces interior elements to be arranged horizontally -->
 								<div class="horizontal-info">Year:</div>                                    <!-- Label for the input -->
-								<input type="number" id="year-input">                                       <!-- Input for care year -->
+								<input required type="number" id="year-input">                                       <!-- Input for care year -->
 							</div>
 							<div class="info">Tell Us Where we can Find The Keys</div>                      <!-- Prompt for key info -->
-							<input class="large-text" id="key-input">                                       <!-- Input for key information -->
+							<input required class="large-text" id="key-input">                                       <!-- Input for key information -->
 						</div>
 						<div class="p-content">                                                             <!-- Summary Section -->
 							<div class="info">Summary</div>
@@ -703,14 +704,14 @@
 			const tireDuration = 15;
 			//Current step-page (1-indexed)
 			var currentStep = 1;
-			//All revelevant data collected in the form
-			var formData = 
+			//Base, initial values for the formdata. Used to ensure the form is filled out
+			var formDataBase = 
 			{
 				"name": "",                 //User's Name
-				"serviceStart": "",         //DTime object
-				"serviceEnd": "",           //DTime object
-				"pickupStart": "",          //DTime object
-				"pickupEnd": "",            //DTime object
+				"serviceStart": {},         //DTime object
+				"serviceEnd": {},           //DTime object
+				"pickupStart": {},          //DTime object
+				"pickupEnd": {},            //DTime object
 				"keyDetails": "",           //How to get the keys
 				"phone": "",
 				"car":
@@ -724,10 +725,20 @@
 				"directions": null,
 				"mileage": 0,
 				"duration": 0,             //Driving minutes one way between service and location
+				"mileageStr": "",
+				"durationStr": "",             //Driving minutes one way between service and location
 				"pickupLocation": "",      //Pick up address
 				"serviceLocation": "James Bolton Auto Shop",      //Service location (car shop, etc)
 				"date": "",
 			};
+			formDataBase.serviceStart = new DTime();
+			formDataBase.serviceEnd = new DTime();
+			formDataBase.pickupStart = new DTime();
+			formDataBase.pickupEnd = new DTime();
+			
+			//All relevant data collected here
+			var formData = Object.assign({}, formDataBase);
+			console.log(formData);
 			
 			//----------------------------------------Predefined functions----------------------------------------
 			//_______________Updates the form to reflect the formData data_______________
@@ -735,22 +746,32 @@
 			{
 				document.getElementById("date-output").innerText = formData.date;
 				if (typeof formData.serviceStart == "object")
-				{document.getElementById("service-start-output").innerText = formData.serviceStart.getTime();} //
+				{
+					document.getElementById("service-start-output").innerText = formData.serviceStart.getTime();
+				} //
 				if (typeof formData.serviceEnd == "object")
-				{document.getElementById("service-end-output").innerText = formData.serviceEnd.getTime();}    //
+				{
+					document.getElementById("service-end-output").innerText = formData.serviceEnd.getTime();
+				}    //
 				if (typeof formData.pickupStart == "object")
-				{document.getElementById("pickup-start-output").innerText = formData.pickupStart.getTime();} //
+				{
+					formData.pickupStart = new DTime(serviceStart.getTotalMinutes() - formData.duration);
+					document.getElementById("pickup-start-output").innerText = formData.pickupStart.getTime();
+				} //
 				if (typeof formData.pickupEnd == "object")
-				{document.getElementById("pickup-end-output").innerText = formData.pickupEnd.getTime();}     //
+				{
+					formData.pickupEnd = new DTime(serviceEnd.getTotalMinutes() + formData.duration);
+					document.getElementById("pickup-end-output").innerText = formData.pickupEnd.getTime();
+				}     //
 				document.getElementById("name-output").innerText = formData.name;                          //
 				document.getElementById("pickup-location-output").innerText = formData.pickupLocation;                  //
 				document.getElementById("service-location-output").innerText = formData.serviceLocation;                  //
 				document.getElementById("phone-output").innerText = formData.phone;                        //
 				document.getElementById("email-output").innerText = formData.email;                        //
 				document.getElementById("key-details-output").innerText = formData.keyDetails;             //
-				document.getElementById("mileage-output").innerText = formData.mileage;                    //
-				document.getElementById("mileage-input").value = formData.mileage;                         //String displaying mile number
-				document.getElementById("minutes-input").value = formData.duration;                        //String display minute number
+				document.getElementById("mileage-output").innerText = formData.mileageStr;                    //
+				document.getElementById("mileage-input").value = formData.mileageStr;                         //String displaying mile number
+				document.getElementById("minutes-input").value = formData.durationStr;                        //String display minute number
 				if (formData.directions != null)
 				{
 					document.getElementById("location-ouput").innerText = formData.directions.routes[0].legs[0].start_address;
@@ -800,8 +821,10 @@
 				google.script.run.withSuccessHandler(function(data)                                  //
 				{
 					formData.directions = data.directions;
-					formData.mileage = data.totalRouteMileageStr;
-					formData.duration = data.routeTimeStr;
+					formData.mileageStr = data.totalRouteMileageStr;
+					formData.durationStr = data.routeTimeStr;
+					formData.mileage = data.totalRouteMileage;
+					formData.duration = data.routeTime;
 					mapDiv.style.backgroundImage = "url(" + data.mapData + ")";                      //Display the map image
 					//formData.pickupStart = new DTime(formData.serviceStart.getTotalMinutes() - formData.duration)
 					//formData.pickupEnd = new DTime(formData.serviceEnd.getTotalMinutes() + formData.duration)
@@ -837,13 +860,11 @@
 			document.getElementById("service-start-input").addEventListener("input", function()
 			{
 				formData.serviceStart = new DTime(this.value);
-				formData.pickupStart = new DTime(formData.serviceStart.getTotalMinutes() - formData.duration)
 				updateForm();
 			});
 			document.getElementById("service-end-input").addEventListener("input", function()
 			{
 				formData.serviceEnd = new DTime(this.value);
-				formData.pickupEnd = new DTime(formData.serviceEnd.getTotalMinutes() + formData.duration)
 				updateForm();
 			});
 			document.getElementById("service-location-input").addEventListener("input", function()
@@ -894,12 +915,30 @@
 			});
 			document.getElementById("submit-button").addEventListener("click", function()
 			{
+				var filledOut = true;
+				Object.keys(formData).forEach(function(key,index) 
+				{
+					if (formData[key] == formDataBase[key])
+					{
+						filledOut = false;
+					}
+				});
+				if (filledOut == false)
+				{
+					alert("Please fill out all fields.");
+				}
 				console.log("Detected submit-click");
 				console.log(JSON.stringify(formData));
+				//Processed form data
+				var finalFormData = Object.assign({}, formData);
+				finalFormData.serviceStartStr = formData.serviceStart.getTime();
+				finalFormData.serviceEndStr = formData.serviceEnd.getTime();
+				finalFormData.pickupStartStr = formData.pickupStart.getTime();
+				finalFormData.pickupEndStr = formData.pickupEnd.getTime();
 				google.script.run.withSuccessHandler(function(theReturn)                             //
 				{
 					
-				}).sendOrder(formData);
+				}).sendOrder(JSON.stringify(finalFormData));
 			});
 			//dlObj.addEventListener("selectorChange", updateServiceStartTimeField);                 //Causes the service-start-time field to change when the user selects a time
 			//AIzaSyDckp4lXhfH2ktCemI1LurhWwUJDlE_brE

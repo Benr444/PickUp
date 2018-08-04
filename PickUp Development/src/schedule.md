@@ -69,3 +69,17 @@
 
 - Complete revamp of main form. Cut all coordination with auto shop for now.
 - todo: route and time estimation
+
+### 7/31
+
+**3 Hours**
+
+- Created email sending at end of form
+- Formatted email
+
+### 8/4
+
+**2 Hours**
+
+- Error message if reached route estimation cap
+- Backup handling for that scenario

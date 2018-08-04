@@ -106,79 +106,79 @@
   	</style>
   </head>
   <body>
-  	<div class="page">
-  		<div class="header">
+  	<div class="page" style="background-color: #666666;">
+  		<div class="header" style="background-color: black;">
 	  	</div>
 	  	<div class="body">
-	  		<div class="large-box">
+	  		<div class="large-box" style="width: 80%; border: 2px solid white; background-color: black; color: white;">
 	  			Thanks for working with PickUp. Here's your order details.
 	  		</div>
-	  		<table class="summary-table" style="border-collapse: collapse; width: 80%; text-align: right; color: white;">
+	  		<table class="summary-table" style="text-transform: uppercase; border-collapse: collapse; width: 80%; text-align: right; color: white; text-transform: uppercase;">
 				<tbody>
-					<tr>
-						<td>Date</td>
-						<td id="date-output"><?= formData.date ?></td>
+					<tr style="background-color: #4d4d4d;">
+						<td style="text-align: left; border: 2px solid white;">Date</td>
+						<td style="border: 2px solid white;" id="date-output"><?= formData.date ?></td>
 					</tr>
 					<tr style="background-color: #1d6334; border: 2px solid white;">
-						<td style="text-align: left">Pickup Location</td>
-						<td id="pickup-location-output"><?= formData.pickupLocation ?></td>
+						<td style="text-align: left; border: 2px solid white;">Pickup Location</td>
+						<td style="border: 2px solid white;" id="pickup-location-output"><?= formData.pickupLocation ?></td>
 					</tr>
 					<tr style="background-color: #4d4d4d; border: 2px solid white;">
-						<td style="text-align: left">Service Location</td>
-						<td id="service-location-output"><?= formData.serviceLocation ?></td>
+						<td style="text-align: left; border: 2px solid white;">Service Location</td>
+						<td style="border: 2px solid white;" id="service-location-output"><?= formData.serviceLocation ?></td>
 					</tr>
 					<tr style="background-color: #1d6334; border: 2px solid white;">
-						<td style="text-align: left">Pickup Time</td>
-						<td id="pickup-start-output"><?= formData.pickupStart ?></td>
+						<td style="text-align: left; border: 2px solid white;">Pickup Time</td>
+						<td style="border: 2px solid white;" id="pickup-start-output"><?= formData.pickupStartStr ?></td>
 					</tr>
 					<tr style="background-color: #4d4d4d; border: 2px solid white;">
-						<td style="text-align: left">Service Start Time</td>
-						<td id="service-start-output"><?= formData.serviceStart ?></td>
+						<td style="text-align: left; border: 2px solid white;">Service Start Time</td>
+						<td style="border: 2px solid white;" id="service-start-output"><?= formData.serviceStartStr ?></td>
 					</tr>
 					<tr style="background-color: #1d6334; border: 2px solid white;">
-						<td style="text-align: left">Service End Time</td>
-						<td id="service-end-output"><?= formData.serviceEnd ?></td>
+						<td style="text-align: left; border: 2px solid white;">Service End Time</td>
+						<td style="border: 2px solid white;" id="service-end-output"><?= formData.serviceEndStr ?></td>
 					</tr>
 					<tr style="background-color: #4d4d4d; border: 2px solid white;">
-						<td style="text-align: left">Return Time</td>
-						<td id="pickup-end-output"><?= formData.pickupEnd ?></td>
+						<td style="text-align: left; border: 2px solid white;">Return Time</td>
+						<td style="border: 2px solid white;" id="pickup-end-output"><?= formData.pickupEndStr ?></td>
 					</tr>
 				</tbody>
 			</table>
-			<table class="summary-table">
+			<table class="summary-table" style="border-collapse: collapse; width: 80%; text-align: right; color: white;">
 				<tbody>
 					<tr style="background-color: #4d4d4d; border: 2px solid white;">
-						<td style="text-align: left">Car</td>
-						<td id="car-output"><?= formData.car.color + " " + formData.car.year + " " + formData.car.make + " " + formData.car.model ?></td>
+						<td style="text-align: left; border: 2px solid white;">Car</td>
+						<td style="border: 2px solid white;" id="car-output"><?= formData.car.color + " " + formData.car.year + " " + formData.car.make + " " + formData.car.model ?></td>
 					</tr>
 					<tr style="background-color: #1d6334; border: 2px solid white;">
-						<td style="text-align: left">Key Pick up Details</td>
-						<td id="key-details-output"><?= formData.keyDetails ?></td>
+						<td style="text-align: left; border: 2px solid white;">Key Pick up Details</td>
+						<td style="border: 2px solid white;" id="key-details-output"><?= formData.keyDetails ?></td>
 					</tr>
 					<tr style="background-color: #4d4d4d; border: 2px solid white;">
-						<td style="text-align: left">Distance of Route</td>
-						<td id="mileage-output"><?= formData.mileage ?></td>
+						<td style="text-align: left; border: 2px solid white;">Distance of Route</td>
+						<td style="border: 2px solid white;" id="mileage-output"><?= formData.mileage ?></td>
 					</tr>
 				</tbody> 
 			</table>
-			<table class="summary-table">
+			<table class="summary-table" style="border-collapse: collapse; width: 80%; text-align: right; color: white;">
 				<tbody>
 					<tr style="background-color: #4d4d4d; border: 2px solid white;">
-						<td style="text-align: left">Name</td>
-						<td id="name-output"><?= formData.name ?></td>
+						<td style="text-align: left; border: 2px solid white;">Name</td>
+						<td style="border: 2px solid white;" id="name-output"><?= formData.name ?></td>
 					</tr>
 					<tr style="background-color: #1d6334; border: 2px solid white;">
-						<td style="text-align: left">Phone Number</td>
-						<td id="phone-output"><?= formData.phone ?></td>
+						<td style="text-align: left; border: 2px solid white;">Phone Number</td>
+						<td style="border: 2px solid white;" id="phone-output"><?= formData.phone ?></td>
 					</tr>
 					<tr style="background-color: #4d4d4d; border: 2px solid white;">
-						<td style="text-align: left">Email</td>
-						<td id="email-output"><?= formData.email ?></td>
+						<td style="text-align: left; border: 2px solid white;">Email</td>
+						<td style="border: 2px solid white;" id="email-output"><?= formData.email ?></td>
 					</tr>
 				</tbody>
 			</table>  	
 	  	</div>
-	  	<div class="footer">
+	  	<div class="footer" style="background-color: black;">
 	  	</div>
   	</div>
   </body>
