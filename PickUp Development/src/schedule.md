@@ -79,7 +79,9 @@
 
 ### 8/4
 
-**2 Hours**
+**5 Hours**
 
 - Error message if reached route estimation cap
 - Backup handling for that scenario
+- Logo and contact information
+- Various bug fixes for data intake and basic validation

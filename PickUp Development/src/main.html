@@ -97,6 +97,10 @@
 			{
 				width: 50%;
 			}
+			a
+			{
+				font-size: inherit;
+			}
 			
 			/*--- Page-Elements CSS ---*/
 			body, html {height: 100%; width: 100%;}
@@ -114,17 +118,30 @@
 			}
 			.header /* Covers very top of page */
 			{
-				grid-area: header''
+				grid-area: header;
+				padding-left: 20px;
+				padding-top: 4px;
 				width: 100%;
 				height: 100%;
 				background-color: black;
+				font-size: 50px;
+				font-weight: bold;
+				font-style: italic;
+				text-transform: none;
+				text-shadow: 5px 5px 25px white;
 			}
 			.footer /* Covers very bottom of page */
 			{
 				grid-area: footer;
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: center;
+				align-items: center;
 				width: 100%;
 				height: 100%;
 				background-color: black;
+				font-size: 13px;
+				user-select: text;
 			}
 			.body /* Covers center section of page */
 			{
@@ -294,6 +311,7 @@
 	<body>
 		<div class="page">                                         <!-- Page-Wrapping Element -->
 			<div class="header">                                   <!-- Leading Bar that covers the top of the page -->
+				PickUp
 			</div>
 			<div class="body">                                     <!-- Main Content of the page -->
 				<div class="panel">                                <!-- Center menu area that holds active elements. Visible content changes per step -->
@@ -307,7 +325,7 @@
 							<div class="info">Select the Day</div>                                          <!-- Label prompting the user to select a day -->
 							<input id="service-date" type="date" class="date-selection" required>           <!-- Input for selecting a day -->
 							<div class="info">                                                              <!-- Label prompting the user to select a time -->
-								Tell Us When Your Service Starts and Ends
+								Tell Us When Your Service Starts and Ends (e.g. 1:30AM)
 							</div>
 							<div class="horizontal-wrap">                                                   <!-- Forces the interior elements to be laid-out horizontally -->
 								<div class="horizontal-info">Service Start:</div>                           <!-- Small label for the start time selection -->
@@ -444,6 +462,7 @@
 				</div>
 			</div>
 			<div class="footer">                                   <!-- Ending bar that covers the very bottom of the page -->
+				Questions or Comments? Contact John Bolton [<a href="mailto:boltonjc@outlook.com?Subject=PickUp%20Feedback" target="_top">boltonjc@outlook.com</a> / 864-216-2385]
 			</div>
 		</div>
 		<script>
@@ -714,21 +733,18 @@
 				"pickupEnd": {},            //DTime object
 				"keyDetails": "",           //How to get the keys
 				"phone": "",
-				"car":
-				{
-					"make": "",
-					"model": "",
-					"year": "",
-					"color": "",
-				},
+				"make": "",
+				"model": "",
+				"year": "",
+				"color": "",
 				"email": "",
 				"directions": null,
 				"mileage": 0,
 				"duration": 0,             //Driving minutes one way between service and location
 				"mileageStr": "",
-				"durationStr": "",             //Driving minutes one way between service and location
+				"durationStr": "",         //Driving minutes one way between service and location
 				"pickupLocation": "",      //Pick up address
-				"serviceLocation": "James Bolton Auto Shop",      //Service location (car shop, etc)
+				"serviceLocation": "",      //Service location (car shop, etc)
 				"date": "",
 			};
 			formDataBase.serviceStart = new DTime();
@@ -738,7 +754,7 @@
 			
 			//All relevant data collected here
 			var formData = Object.assign({}, formDataBase);
-			console.log(formData);
+			formData.serviceLocation = "James Bolton Auto Shop";
 			
 			//----------------------------------------Predefined functions----------------------------------------
 			//_______________Updates the form to reflect the formData data_______________
@@ -755,28 +771,24 @@
 				}    //
 				if (typeof formData.pickupStart == "object")
 				{
-					formData.pickupStart = new DTime(serviceStart.getTotalMinutes() - formData.duration);
+					formData.pickupStart = new DTime(formData.serviceStart.getTotalMinutes() - formData.duration);
 					document.getElementById("pickup-start-output").innerText = formData.pickupStart.getTime();
 				} //
 				if (typeof formData.pickupEnd == "object")
 				{
-					formData.pickupEnd = new DTime(serviceEnd.getTotalMinutes() + formData.duration);
+					formData.pickupEnd = new DTime(formData.serviceEnd.getTotalMinutes() + formData.duration);
 					document.getElementById("pickup-end-output").innerText = formData.pickupEnd.getTime();
 				}     //
 				document.getElementById("name-output").innerText = formData.name;                          //
-				document.getElementById("pickup-location-output").innerText = formData.pickupLocation;                  //
-				document.getElementById("service-location-output").innerText = formData.serviceLocation;                  //
+				document.getElementById("pickup-location-output").innerText = formData.pickupLocation;     //
+				document.getElementById("service-location-output").innerText = formData.serviceLocation;   //
 				document.getElementById("phone-output").innerText = formData.phone;                        //
 				document.getElementById("email-output").innerText = formData.email;                        //
 				document.getElementById("key-details-output").innerText = formData.keyDetails;             //
-				document.getElementById("mileage-output").innerText = formData.mileageStr;                    //
-				document.getElementById("mileage-input").value = formData.mileageStr;                         //String displaying mile number
-				document.getElementById("minutes-input").value = formData.durationStr;                        //String display minute number
-				if (formData.directions != null)
-				{
-					document.getElementById("location-ouput").innerText = formData.directions.routes[0].legs[0].start_address;
-				}
-				document.getElementById("car-output").innerText = formData.car.color + " " + formData.car.year + " " + formData.car.make + " " + formData.car.model;
+				document.getElementById("mileage-output").innerText = formData.mileageStr;                 //
+				document.getElementById("mileage-input").value = formData.mileageStr;                      //String displaying mile number
+				document.getElementById("minutes-input").value = formData.durationStr;                     //String display minute number
+				document.getElementById("car-output").innerText = (formData.color + " " + formData.year + " " + formData.make + " " + formData.model);
 			}
 			
 			//_______________Advances or reverses to the next section of the form_______________
@@ -811,6 +823,7 @@
 			var makeRoute = function()
 			{
 				//console.log(this.value);
+				formData.pickupLocation = document.getElementById("pickup-address").value
 				var mapDiv = document.getElementById("pickup-map");                                  //Grab map box
 				var pxWidth = mapDiv.getBoundingClientRect().width;                                  //Grab map box width
 				var pxHeight = mapDiv.getBoundingClientRect().height;                                //Grab map box height
@@ -829,7 +842,7 @@
 					//formData.pickupStart = new DTime(formData.serviceStart.getTotalMinutes() - formData.duration)
 					//formData.pickupEnd = new DTime(formData.serviceEnd.getTotalMinutes() + formData.duration)
 					updateForm();
-				}).generateRoute(document.getElementById("pickup-address").value, pxWidth, pxHeight);//Pass through address and map box size (so the map image is correctly sized) and get the route data
+				}).generateRoute(formData.pickupLocation, pxWidth, pxHeight);//Pass through address and map box size (so the map image is correctly sized) and get the route data
 			}
 			
 			//----------------------------------------Run on page load----------------------------------------
@@ -895,50 +908,73 @@
 			document.getElementById("address-button").addEventListener("click", makeRoute)           //Makes makeRoute listen for address changes
 			document.getElementById("make-input").addEventListener("input", function()
 			{
-				formData.car.make = this.value;
+				formData.make = this.value;
 				updateForm();
 			});
 			document.getElementById("model-input").addEventListener("input", function()
 			{
-				formData.car.model = this.value;
+				formData.model = this.value;
 				updateForm();
 			});
 			document.getElementById("color-input").addEventListener("input", function()
 			{
-				formData.car.color = this.value;
+				formData.color = this.value;
 				updateForm();
 			});
 			document.getElementById("year-input").addEventListener("input", function()
 			{
-				formData.car.year = this.value;
+				formData.year = this.value;
 				updateForm();
 			});
 			document.getElementById("submit-button").addEventListener("click", function()
 			{
+				//Processed form data
+				var finalFormData = Object.assign({}, formData);
+				var finalFormDataBase = Object.assign({}, formDataBase);
+				
+				finalFormData.serviceStartStr = formData.serviceStart.getTime();
+				finalFormData.serviceEndStr = formData.serviceEnd.getTime();
+				finalFormData.pickupStartStr = formData.pickupStart.getTime();
+				finalFormData.pickupEndStr = formData.pickupEnd.getTime();
+				
+				finalFormDataBase.serviceStartStr = formDataBase.serviceStart.getTime();
+				finalFormDataBase.serviceEndStr = formDataBase.serviceEnd.getTime();
+				finalFormDataBase.pickupStartStr = formDataBase.pickupStart.getTime();
+				finalFormDataBase.pickupEndStr = formDataBase.pickupEnd.getTime();
+				
+				console.log(finalFormData);
+				console.log(finalFormDataBase);
 				var filledOut = true;
 				Object.keys(formData).forEach(function(key,index) 
 				{
-					if (formData[key] == formDataBase[key])
+					console.log(finalFormData[key]);
+					console.log(finalFormDataBase[key]);
+					console.log(key + ": matches? ");
+					console.log(JSON.stringify(finalFormData[key]) === JSON.stringify(finalFormDataBase[key]));
+					if (key === "serviceStart" || key === "serviceEnd" || key === "pickupStart" || key === "pickupEnd")
 					{
-						filledOut = false;
+						//Not depending on these values
+					}
+					else
+					{
+						if (JSON.stringify(finalFormData[key]) === JSON.stringify(finalFormDataBase[key]))
+						{
+							filledOut = false;
+						}
 					}
 				});
 				if (filledOut == false)
 				{
 					alert("Please fill out all fields.");
 				}
-				console.log("Detected submit-click");
-				console.log(JSON.stringify(formData));
-				//Processed form data
-				var finalFormData = Object.assign({}, formData);
-				finalFormData.serviceStartStr = formData.serviceStart.getTime();
-				finalFormData.serviceEndStr = formData.serviceEnd.getTime();
-				finalFormData.pickupStartStr = formData.pickupStart.getTime();
-				finalFormData.pickupEndStr = formData.pickupEnd.getTime();
-				google.script.run.withSuccessHandler(function(theReturn)                             //
+				else
 				{
-					
-				}).sendOrder(JSON.stringify(finalFormData));
+					alert("Thanks! Your request has been submitted.")
+					google.script.run.withSuccessHandler(function(theReturn)                             //
+					{
+						
+					}).sendOrder(JSON.stringify(finalFormData));
+				}
 			});
 			//dlObj.addEventListener("selectorChange", updateServiceStartTimeField);                 //Causes the service-start-time field to change when the user selects a time
 			//AIzaSyDckp4lXhfH2ktCemI1LurhWwUJDlE_brE

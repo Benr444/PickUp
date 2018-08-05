@@ -110,8 +110,8 @@
   		<div class="header" style="background-color: black;">
 	  	</div>
 	  	<div class="body">
-	  		<div class="large-box" style="width: 80%; border: 2px solid white; background-color: black; color: white;">
-	  			Thanks for working with PickUp. Here's your order details.
+	  		<div class="large-box" style="text-transform: uppercase; width: 80%; border: 2px solid white; background-color: black; color: white;">
+	  			Thanks for working with PickUp. Here's your order details. Contact us if you have any issues.
 	  		</div>
 	  		<table class="summary-table" style="text-transform: uppercase; border-collapse: collapse; width: 80%; text-align: right; color: white; text-transform: uppercase;">
 				<tbody>
@@ -145,11 +145,11 @@
 					</tr>
 				</tbody>
 			</table>
-			<table class="summary-table" style="border-collapse: collapse; width: 80%; text-align: right; color: white;">
+			<table class="summary-table" style="text-transform: uppercase; border-collapse: collapse; width: 80%; text-align: right; color: white;">
 				<tbody>
 					<tr style="background-color: #4d4d4d; border: 2px solid white;">
 						<td style="text-align: left; border: 2px solid white;">Car</td>
-						<td style="border: 2px solid white;" id="car-output"><?= formData.car.color + " " + formData.car.year + " " + formData.car.make + " " + formData.car.model ?></td>
+						<td style="border: 2px solid white;" id="car-output"><?= formData.color + " " + formData.year + " " + formData.make + " " + formData.model ?></td>
 					</tr>
 					<tr style="background-color: #1d6334; border: 2px solid white;">
 						<td style="text-align: left; border: 2px solid white;">Key Pick up Details</td>
@@ -161,7 +161,7 @@
 					</tr>
 				</tbody> 
 			</table>
-			<table class="summary-table" style="border-collapse: collapse; width: 80%; text-align: right; color: white;">
+			<table class="summary-table" style="text-transform: uppercase; border-collapse: collapse; width: 80%; text-align: right; color: white;">
 				<tbody>
 					<tr style="background-color: #4d4d4d; border: 2px solid white;">
 						<td style="text-align: left; border: 2px solid white;">Name</td>
@@ -173,7 +173,7 @@
 					</tr>
 					<tr style="background-color: #4d4d4d; border: 2px solid white;">
 						<td style="text-align: left; border: 2px solid white;">Email</td>
-						<td style="border: 2px solid white;" id="email-output"><?= formData.email ?></td>
+						<td style="border: 2px solid white; color: white;" id="email-output"><?= formData.email ?> <?= " / " ?> <?= formData.gmail ?></td>
 					</tr>
 				</tbody>
 			</table>  	
